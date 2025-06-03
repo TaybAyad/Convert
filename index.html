@@ -1,429 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Currency Converter</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-      :root {
-        --primary-color: #4caf50; /* Green */
-        --secondary-color: #607d8b; /* Blue Grey */
-        --background-color: #eceff1; /* Light Grey */
-        --card-background: #ffffff;
-        --text-color: #37474f; /* Dark Blue Grey */
-        --border-color: #cfd8dc;
-        --focus-glow: rgba(76, 175, 80, 0.4);
-        --animation-duration: 0.3s;
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: "Poppins", sans-serif;
-        background-color: var(--background-color);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        color: var(--text-color);
-        overflow: hidden; /* Prevent scrollbar from initial animation */
-      }
-
-      .converter-container {
-        background-color: var(--card-background);
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        padding: 40px;
-        width: 90%;
-        max-width: 500px;
-        text-align: center;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInRise var(--animation-duration) forwards ease-out;
-        animation-delay: 0.2s;
-      }
-
-      @keyframes fadeInRise {
-        to {
-          opacity: 1;
-          transform: translateY(0);
+        :root {
+            --primary-color: #4CAF50; /* Green */
+            --secondary-color: #607D8B; /* Blue Grey */
+            --background-color: #eceff1; /* Light Grey */
+            --card-background: #ffffff;
+            --text-color: #37474f; /* Dark Blue Grey */
+            --border-color: #cfd8dc;
+            --focus-glow: rgba(76, 175, 80, 0.4);
+            --animation-duration: 0.3s;
         }
-      }
 
-      h1 {
-        color: var(--primary-color);
-        margin-bottom: 30px;
-        font-weight: 600;
-        font-size: 2em;
-        position: relative;
-        animation: textPopIn 0.5s ease-out forwards;
-        animation-delay: 0.4s;
-        opacity: 0;
-      }
-
-      @keyframes textPopIn {
-        0% {
-          opacity: 0;
-          transform: scale(0.8);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        100% {
-          opacity: 1;
-          transform: scale(1);
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            /* REMOVED: overflow: hidden; to allow scrolling */
         }
-      }
 
-      .input-group {
-        margin-bottom: 25px;
-        text-align: left;
-        position: relative;
-      }
-
-      .input-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 400;
-        font-size: 0.9em;
-        color: var(--secondary-color);
-        transform: translateX(-10px);
-        opacity: 0;
-        animation: slideInLabel 0.5s ease-out forwards;
-        animation-delay: var(--label-delay);
-      }
-
-      @keyframes slideInLabel {
-        to {
-          opacity: 1;
-          transform: translateX(0);
+        .converter-container {
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInRise var(--animation-duration) forwards ease-out;
+            animation-delay: 0.2s;
+            /* Added margin-bottom for a bit of space if content goes below screen */
+            margin-bottom: 40px;
+            margin-top: 40px; /* Also added margin-top for top spacing */
         }
-      }
 
-      .input-group input[type="number"],
-      .input-group input[type="text"] {
-        width: 100%;
-        padding: 15px;
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        font-size: 1.2em;
-        color: var(--text-color);
-        transition: all var(--animation-duration) ease;
-        -moz-appearance: textfield; /* Firefox */
-      }
-
-      /* Hide number input arrows for Chrome, Safari, Edge */
-      .input-group input[type="number"]::-webkit-outer-spin-button,
-      .input-group input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-
-      .input-group input[type="number"]:focus,
-      .input-group input[type="text"]:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 4px var(--focus-glow);
-        transform: scale(1.02);
-      }
-
-      /* Animation for value updates */
-      .input-group input[data-animating="true"] {
-        animation: pulseHighlight 0.5s ease-in-out;
-      }
-
-      @keyframes pulseHighlight {
-        0% {
-          background-color: transparent;
+        @keyframes fadeInRise {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        50% {
-          background-color: rgba(76, 175, 80, 0.1);
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 2em;
+            position: relative;
+            animation: textPopIn 0.5s ease-out forwards;
+            animation-delay: 0.4s;
+            opacity: 0;
         }
-        100% {
-          background-color: transparent;
+
+        @keyframes textPopIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
-      }
 
-      .buttons-group {
-        margin-top: 30px;
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-      }
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+            position: relative;
+        }
 
-      .buttons-group button {
-        background-color: var(--secondary-color);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 12px 25px;
-        font-size: 1em;
-        cursor: pointer;
-        transition: all var(--animation-duration) ease;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            font-size: 0.9em;
+            color: var(--secondary-color);
+            transform: translateX(-10px);
+            opacity: 0;
+            animation: slideInLabel 0.5s ease-out forwards;
+            animation-delay: var(--label-delay);
+        }
 
-      .buttons-group button:hover {
-        background-color: #546e7a;
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-      }
+        @keyframes slideInLabel {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
-      .buttons-group button:active {
-        transform: translateY(0) scale(0.98);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
+        .input-group input[type="number"],
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1.2em;
+            color: var(--text-color);
+            transition: all var(--animation-duration) ease;
+            -moz-appearance: textfield; /* Firefox */
+        }
 
-      .rate-adjustment-group {
-        margin-top: 30px;
-        padding-top: 25px;
-        border-top: 1px dashed var(--border-color);
-        text-align: left;
-      }
-      .rate-adjustment-group .input-group {
-        margin-bottom: 20px; /* Adjust spacing between rate inputs */
-      }
-      .rate-adjustment-group label {
-        font-size: 0.9em;
-        color: var(--secondary-color);
-      }
-      .rate-adjustment-group input {
-        font-size: 1.1em;
-        padding: 10px;
-        margin-top: 5px; /* Give some space below label */
-      }
+        /* Hide number input arrows for Chrome, Safari, Edge */
+        .input-group input[type="number"]::-webkit-outer-spin-button,
+        .input-group input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .input-group input[type="number"]:focus,
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--focus-glow);
+            transform: scale(1.02);
+        }
+
+        /* Animation for value updates */
+        .input-group input[data-animating="true"] {
+            animation: pulseHighlight 0.5s ease-in-out;
+        }
+
+        @keyframes pulseHighlight {
+            0% { background-color: transparent; }
+            50% { background-color: rgba(76, 175, 80, 0.1); }
+            100% { background-color: transparent; }
+        }
+
+        .buttons-group {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .buttons-group button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all var(--animation-duration) ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons-group button:hover {
+            background-color: #546E7A;
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .buttons-group button:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .rate-adjustment-group {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px dashed var(--border-color);
+            text-align: left;
+        }
+        .rate-adjustment-group .input-group {
+            margin-bottom: 20px; /* Adjust spacing between rate inputs */
+        }
+        .rate-adjustment-group label {
+            font-size: 0.9em;
+            color: var(--secondary-color);
+        }
+        .rate-adjustment-group input {
+            font-size: 1.1em;
+            padding: 10px;
+            margin-top: 5px; /* Give some space below label */
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="converter-container">
-      <h1>Currency Converter</h1>
+        <h1>Currency Converter</h1>
 
-      <div class="input-group">
-        <label for="tlInput" style="--label-delay: 0.6s"
-          >Turkish Lira (TL)</label
-        >
-        <input type="number" id="tlInput" placeholder="Enter TL amount" />
-      </div>
-
-      <div class="input-group">
-        <label for="usdInput" style="--label-delay: 0.7s"
-          >US Dollar (USD)</label
-        >
-        <input type="number" id="usdInput" placeholder="Enter USD amount" />
-      </div>
-
-      <div class="input-group">
-        <label for="iqdInput" style="--label-delay: 0.8s"
-          >Iraqi Dinar (IQD)</label
-        >
-        <input type="number" id="iqdInput" placeholder="Enter IQD amount" />
-      </div>
-
-      <div class="buttons-group">
-        <button id="clearButton">Clear All</button>
-      </div>
-
-      <div class="rate-adjustment-group">
         <div class="input-group">
-          <label for="tlRateInput" style="--label-delay: 0.9s"
-            >1 USD = <span id="currentTlRateDisplay">38.50</span> TL
-            (Adjustable)</label
-          >
-          <input
-            type="number"
-            id="tlRateInput"
-            value="38.50"
-            min="0.01"
-            step="0.01"
-            placeholder="Enter new TL rate for 1 USD"
-          />
+            <label for="tlInput" style="--label-delay: 0.6s;">Turkish Lira (TL)</label>
+            <input type="number" id="tlInput" placeholder="Enter TL amount">
         </div>
 
         <div class="input-group">
-          <label for="iqdRateInput" style="--label-delay: 1s"
-            >1 USD = <span id="currentIqdRateDisplay">1400</span> IQD
-            (Adjustable)</label
-          >
-          <input
-            type="number"
-            id="iqdRateInput"
-            value="1400"
-            min="1"
-            placeholder="Enter new IQD rate for 1 USD"
-          />
+            <label for="usdInput" style="--label-delay: 0.7s;">US Dollar (USD)</label>
+            <input type="number" id="usdInput" placeholder="Enter USD amount">
         </div>
-      </div>
+
+        <div class="input-group">
+            <label for="iqdInput" style="--label-delay: 0.8s;">Iraqi Dinar (IQD)</label>
+            <input type="number" id="iqdInput" placeholder="Enter IQD amount">
+        </div>
+
+        <div class="buttons-group">
+            <button id="clearButton">Clear All</button>
+        </div>
+
+        <div class="rate-adjustment-group">
+            <div class="input-group">
+                <label for="tlRateInput" style="--label-delay: 0.9s;">1 USD = <span id="currentTlRateDisplay">38.50</span> TL (Adjustable)</label>
+                <input type="number" id="tlRateInput" value="38.50" min="0.01" step="0.01" placeholder="Enter new TL rate for 1 USD">
+            </div>
+
+            <div class="input-group">
+                <label for="iqdRateInput" style="--label-delay: 1.0s;">1 USD = <span id="currentIqdRateDisplay">1400</span> IQD (Adjustable)</label>
+                <input type="number" id="iqdRateInput" value="1400" min="1" placeholder="Enter new IQD rate for 1 USD">
+            </div>
+        </div>
     </div>
 
     <script>
-      // --- DOM Elements ---
-      const tlInput = document.getElementById("tlInput");
-      const usdInput = document.getElementById("usdInput");
-      const iqdInput = document.getElementById("iqdInput");
-      const tlRateInput = document.getElementById("tlRateInput");
-      const iqdRateInput = document.getElementById("iqdRateInput");
-      const currentTlRateDisplay = document.getElementById(
-        "currentTlRateDisplay"
-      );
-      const currentIqdRateDisplay = document.getElementById(
-        "currentIqdRateDisplay"
-      );
-      const clearButton = document.getElementById("clearButton");
+        // --- DOM Elements ---
+        const tlInput = document.getElementById('tlInput');
+        const usdInput = document.getElementById('usdInput');
+        const iqdInput = document.getElementById('iqdInput');
+        const tlRateInput = document.getElementById('tlRateInput');
+        const iqdRateInput = document.getElementById('iqdRateInput');
+        const currentTlRateDisplay = document.getElementById('currentTlRateDisplay');
+        const currentIqdRateDisplay = document.getElementById('currentIqdRateDisplay');
+        const clearButton = document.getElementById('clearButton');
 
-      // --- Exchange Rates (Now dynamic 'let' variables) ---
-      let USD_TO_TL_RATE = parseFloat(tlRateInput.value); // Initialize from input default
-      let USD_TO_IQD_RATE = parseFloat(iqdRateInput.value); // Initialize from input default
+        // --- Exchange Rates (Now dynamic 'let' variables) ---
+        let USD_TO_TL_RATE = parseFloat(tlRateInput.value); // Initialize from input default
+        let USD_TO_IQD_RATE = parseFloat(iqdRateInput.value); // Initialize from input default
 
-      // --- Helper Function: Apply a quick animation on input fields ---
-      function animateInput(element) {
-        element.setAttribute("data-animating", "true");
-        setTimeout(() => {
-          element.removeAttribute("data-animating");
-        }, 500); // Duration of the pulseHighlight animation
-      }
-
-      // --- Core Conversion Functions ---
-      function convertFromTL() {
-        let tlValue = parseFloat(tlInput.value);
-        if (isNaN(tlValue) || tlValue < 0) {
-          // Handle non-numeric or negative input
-          usdInput.value = "";
-          iqdInput.value = "";
-          return;
+        // --- Helper Function: Apply a quick animation on input fields ---
+        function animateInput(element) {
+            element.setAttribute('data-animating', 'true');
+            setTimeout(() => {
+                element.removeAttribute('data-animating');
+            }, 500); // Duration of the pulseHighlight animation
         }
 
-        const usdValue = tlValue / USD_TO_TL_RATE;
-        const iqdValue = usdValue * USD_TO_IQD_RATE;
+        // --- Core Conversion Functions ---
+        function convertFromTL() {
+            let tlValue = parseFloat(tlInput.value);
+            if (isNaN(tlValue) || tlValue < 0) { // Handle non-numeric or negative input
+                usdInput.value = '';
+                iqdInput.value = '';
+                return;
+            }
 
-        usdInput.value = usdValue.toFixed(2);
-        iqdInput.value = iqdValue.toFixed(2);
+            const usdValue = tlValue / USD_TO_TL_RATE;
+            const iqdValue = usdValue * USD_TO_IQD_RATE;
 
-        animateInput(usdInput);
-        animateInput(iqdInput);
-      }
+            usdInput.value = usdValue.toFixed(2);
+            iqdInput.value = iqdValue.toFixed(2);
 
-      function convertFromUSD() {
-        let usdValue = parseFloat(usdInput.value);
-        if (isNaN(usdValue) || usdValue < 0) {
-          tlInput.value = "";
-          iqdInput.value = "";
-          return;
+            animateInput(usdInput);
+            animateInput(iqdInput);
         }
 
-        const tlValue = usdValue * USD_TO_TL_RATE;
-        const iqdValue = usdValue * USD_TO_IQD_RATE;
+        function convertFromUSD() {
+            let usdValue = parseFloat(usdInput.value);
+            if (isNaN(usdValue) || usdValue < 0) {
+                tlInput.value = '';
+                iqdInput.value = '';
+                return;
+            }
 
-        tlInput.value = tlValue.toFixed(2);
-        iqdInput.value = iqdValue.toFixed(2);
+            const tlValue = usdValue * USD_TO_TL_RATE;
+            const iqdValue = usdValue * USD_TO_IQD_RATE;
 
-        animateInput(tlInput);
-        animateInput(iqdInput);
-      }
+            tlInput.value = tlValue.toFixed(2);
+            iqdInput.value = iqdValue.toFixed(2);
 
-      function convertFromIQD() {
-        let iqdValue = parseFloat(iqdInput.value);
-        if (isNaN(iqdValue) || iqdValue < 0) {
-          tlInput.value = "";
-          usdInput.value = "";
-          return;
+            animateInput(tlInput);
+            animateInput(iqdInput);
         }
 
-        // IQD -> USD -> TL
-        const usdValue = iqdValue / USD_TO_IQD_RATE;
-        const tlValue = usdValue * USD_TO_TL_RATE;
+        function convertFromIQD() {
+            let iqdValue = parseFloat(iqdInput.value);
+            if (isNaN(iqdValue) || iqdValue < 0) {
+                tlInput.value = '';
+                usdInput.value = '';
+                return;
+            }
 
-        tlInput.value = tlValue.toFixed(2);
-        usdInput.value = usdValue.toFixed(2);
+            // IQD -> USD -> TL
+            const usdValue = iqdValue / USD_TO_IQD_RATE;
+            const tlValue = usdValue * USD_TO_TL_RATE;
 
-        animateInput(tlInput);
-        animateInput(usdInput);
-      }
+            tlInput.value = tlValue.toFixed(2);
+            usdInput.value = usdValue.toFixed(2);
 
-      // --- Event Listeners for Currency Inputs ---
-      tlInput.addEventListener("input", () => {
-        clearOtherInputs(tlInput);
-        convertFromTL();
-      });
-
-      usdInput.addEventListener("input", () => {
-        clearOtherInputs(usdInput);
-        convertFromUSD();
-      });
-
-      iqdInput.addEventListener("input", () => {
-        clearOtherInputs(iqdInput);
-        convertFromIQD();
-      });
-
-      // --- Event Listener for TL Rate Adjustment ---
-      tlRateInput.addEventListener("input", () => {
-        let newRate = parseFloat(tlRateInput.value);
-        if (isNaN(newRate) || newRate <= 0) {
-          newRate = 38.5; // Revert to default if invalid or zero
-          tlRateInput.value = newRate; // Update input field to show default
+            animateInput(tlInput);
+            animateInput(usdInput);
         }
-        USD_TO_TL_RATE = newRate;
-        currentTlRateDisplay.textContent = newRate.toFixed(2); // Update display
 
-        // Re-run conversion if any main input has a value
-        if (tlInput.value) convertFromTL();
-        else if (usdInput.value) convertFromUSD();
-        else if (iqdInput.value) convertFromIQD();
+        // --- Event Listeners for Currency Inputs ---
+        tlInput.addEventListener('input', () => {
+            clearOtherInputs(tlInput);
+            convertFromTL();
+        });
 
-        animateInput(tlRateInput); // Animate the rate input itself
-      });
+        usdInput.addEventListener('input', () => {
+            clearOtherInputs(usdInput);
+            convertFromUSD();
+        });
 
-      // --- Event Listener for IQD Rate Adjustment ---
-      iqdRateInput.addEventListener("input", () => {
-        let newRate = parseFloat(iqdRateInput.value);
-        if (isNaN(newRate) || newRate <= 0) {
-          newRate = 1420; // Revert to default if invalid or zero
-          iqdRateInput.value = newRate; // Update input field to show default
+        iqdInput.addEventListener('input', () => {
+            clearOtherInputs(iqdInput);
+            convertFromIQD();
+        });
+
+        // --- Event Listener for TL Rate Adjustment ---
+        tlRateInput.addEventListener('input', () => {
+            let newRate = parseFloat(tlRateInput.value);
+            if (isNaN(newRate) || newRate <= 0) {
+                newRate = 38.50; // Revert to default if invalid or zero
+                tlRateInput.value = newRate; // Update input field to show default
+            }
+            USD_TO_TL_RATE = newRate;
+            currentTlRateDisplay.textContent = newRate.toFixed(2); // Update display
+
+            // Re-run conversion if any main input has a value
+            if (tlInput.value) convertFromTL();
+            else if (usdInput.value) convertFromUSD();
+            else if (iqdInput.value) convertFromIQD();
+
+            animateInput(tlRateInput); // Animate the rate input itself
+        });
+
+        // --- Event Listener for IQD Rate Adjustment ---
+        iqdRateInput.addEventListener('input', () => {
+            let newRate = parseFloat(iqdRateInput.value);
+            if (isNaN(newRate) || newRate <= 0) {
+                newRate = 1400; // Revert to new default if invalid or zero
+                iqdRateInput.value = newRate; // Update input field to show default
+            }
+            USD_TO_IQD_RATE = newRate;
+            currentIqdRateDisplay.textContent = newRate.toLocaleString(); // Update display with thousands separator
+
+            // Re-run conversion if any main input has a value
+            if (tlInput.value) convertFromTL();
+            else if (usdInput.value) convertFromUSD();
+            else if (iqdInput.value) convertFromIQD();
+
+            animateInput(iqdRateInput); // Animate the rate input itself
+        });
+
+        // --- Helper Function: Clear other currency inputs when one is typed into ---
+        function clearOtherInputs(activeInput) {
+            if (activeInput !== tlInput) tlInput.value = '';
+            if (activeInput !== usdInput) usdInput.value = '';
+            if (activeInput !== iqdInput) iqdInput.value = '';
         }
-        USD_TO_IQD_RATE = newRate;
-        currentIqdRateDisplay.textContent = newRate.toLocaleString(); // Update display with thousands separator
 
-        // Re-run conversion if any main input has a value
-        if (tlInput.value) convertFromTL();
-        else if (usdInput.value) convertFromUSD();
-        else if (iqdInput.value) convertFromIQD();
+        // --- Clear Button Functionality ---
+        clearButton.addEventListener('click', () => {
+            // Clear main currency inputs
+            tlInput.value = '';
+            usdInput.value = '';
+            iqdInput.value = '';
 
-        animateInput(iqdRateInput); // Animate the rate input itself
-      });
+            // Reset TL rate to default
+            tlRateInput.value = '38.50';
+            USD_TO_TL_RATE = 38.50;
+            currentTlRateDisplay.textContent = '38.50';
 
-      // --- Helper Function: Clear other currency inputs when one is typed into ---
-      function clearOtherInputs(activeInput) {
-        if (activeInput !== tlInput) tlInput.value = "";
-        if (activeInput !== usdInput) usdInput.value = "";
-        if (activeInput !== iqdInput) iqdInput.value = "";
-      }
+            // Reset IQD rate to new default
+            iqdRateInput.value = '1400';
+            USD_TO_IQD_RATE = 1400;
+            currentIqdRateDisplay.textContent = '1400';
+        });
 
-      // --- Clear Button Functionality ---
-      clearButton.addEventListener("click", () => {
-        // Clear main currency inputs
-        tlInput.value = "";
-        usdInput.value = "";
-        iqdInput.value = "";
-
-        // Reset TL rate to default
-        tlRateInput.value = "38.50";
-        USD_TO_TL_RATE = 38.5;
-        currentTlRateDisplay.textContent = "38.50";
-
-        // Reset IQD rate to default
-        iqdRateInput.value = "1400";
-        USD_TO_IQD_RATE = 1400;
-        currentIqdRateDisplay.textContent = "1400";
-      });
-
-      // --- Initial Display Updates on Page Load ---
-      currentTlRateDisplay.textContent = USD_TO_TL_RATE.toFixed(2);
-      currentIqdRateDisplay.textContent = USD_TO_IQD_RATE.toLocaleString();
+        // --- Initial Display Updates on Page Load ---
+        currentTlRateDisplay.textContent = USD_TO_TL_RATE.toFixed(2);
+        currentIqdRateDisplay.textContent = USD_TO_IQD_RATE.toLocaleString();
     </script>
-  </body>
+</body>
 </html>
